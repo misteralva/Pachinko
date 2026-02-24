@@ -1,0 +1,628 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dragon Fortune Pachinko 福龍</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<!-- ═══ ROOM ATMOSPHERE ═══ -->
+<div class="room-bg" aria-hidden="true">
+  <div class="room-scanlines"></div>
+  <div class="room-beam beam-l"></div>
+  <div class="room-beam beam-r"></div>
+  <div class="room-smoke smoke-1"></div>
+  <div class="room-smoke smoke-2"></div>
+  <div class="room-smoke smoke-3"></div>
+  <div class="float-kanji k1">福</div>
+  <div class="float-kanji k2">龍</div>
+  <div class="float-kanji k3">運</div>
+  <div class="float-kanji k4">宝</div>
+  <div class="float-kanji k5">金</div>
+</div>
+
+<!-- ═══ OVERLAYS ═══ -->
+<div id="fever-overlay" class="fever-overlay" aria-hidden="true">
+  <div class="fever-text">🔥 FEVER MODE 🔥</div>
+  <div class="fever-sub">大当たり · JACKPOT · ×5</div>
+</div>
+<div id="minigame-overlay" class="minigame-overlay" aria-hidden="true">
+  <div class="mg-inner">
+    <div class="mg-title" id="mg-title">V-ZONE HIT!</div>
+    <div class="mg-sub"   id="mg-sub">チャンス · SPINNING REELS…</div>
+  </div>
+</div>
+<div id="reach-overlay" class="reach-overlay" aria-hidden="true">
+  <div class="reach-text">⚡ REACH ⚡</div>
+  <div class="reach-sub">LAST CHANCE…</div>
+</div>
+
+<!-- ═══ GAME OVER SCREEN ═══ -->
+<div id="gameover-screen" class="gameover-screen" style="display:none" aria-label="Game Over">
+  <div class="go-scanlines"></div>
+  <div class="go-content">
+    <div class="go-title">GAME<br>OVER</div>
+    <div class="go-score-wrap">
+      <div class="go-stat-row"><span class="go-stat-label">SCORE</span><span class="go-stat-val gold" id="go-score">0</span></div>
+      <div class="go-stat-row"><span class="go-stat-label">RÉCORD</span><span class="go-stat-val blue" id="go-high">0</span></div>
+      <div class="go-stat-row"><span class="go-stat-label">TIROS</span><span class="go-stat-val" id="go-shots">0</span></div>
+      <div class="go-stat-row"><span class="go-stat-label">JACKPOTS</span><span class="go-stat-val pink" id="go-jackpots">0</span></div>
+      <div class="go-stat-row"><span class="go-stat-label">TIEMPO</span><span class="go-stat-val" id="go-time">0s</span></div>
+      <div class="go-stat-row"><span class="go-stat-label">PRECISIÓN</span><span class="go-stat-val green" id="go-acc">0%</span></div>
+    </div>
+    <div class="go-lb-title">🏆 RANKING 🏆</div>
+    <div class="go-lb" id="go-lb"></div>
+    <div class="go-btns">
+      <div class="go-btn" id="go-play-again" role="button" tabindex="0">▶ JUGAR DE NUEVO</div>
+      <div class="go-btn go-btn-gold" id="go-add-coin" role="button" tabindex="0">¥ INSERTAR MONEDA</div>
+    </div>
+  </div>
+  <div class="go-led-top"></div>
+  <div class="go-led-bot"></div>
+</div>
+
+<!-- ═══ COIN / ATTRACT SCREEN ═══ -->
+<div id="coin-screen" class="coin-screen" role="dialog" aria-label="Introduce una moneda para jugar">
+
+  <!-- Scanlines on attract screen -->
+  <div class="cs-scanlines"></div>
+
+  <!-- Attract screen header glow -->
+  <div class="cs-glow-top"></div>
+  <div class="cs-glow-bot"></div>
+
+  <!-- Game logo / title -->
+  <div class="cs-logo">
+    <div class="cs-logo-kanji" aria-hidden="true">福龍</div>
+    <div class="cs-logo-title">DRAGON FORTUNE</div>
+    <div class="cs-logo-sub">パチンコ · PACHINKO</div>
+  </div>
+
+  <!-- Jackpot display (live counter) -->
+  <div class="cs-jackpot-wrap">
+    <div class="cs-jackpot-label">★ JACKPOT ★</div>
+    <div class="cs-jackpot-val" id="attract-jackpot-val">1,234,500</div>
+    <div class="cs-jackpot-label">¥ · PUNTOS</div>
+  </div>
+
+  <!-- Big animated coin slot -->
+  <div class="cs-slot-section">
+    <div class="cs-insert-blink">► INSERT COIN ◄</div>
+    <div id="attract-slot-vis" class="cs-slot-visual">
+
+      <!-- Coin that animates dropping -->
+      <div class="cs-coin-drop-zone">
+        <div id="attract-coin" class="cs-coin">¥</div>
+      </div>
+
+      <!-- The actual slot -->
+      <div class="cs-machine-face" id="coin-screen-btn" role="button" tabindex="0" aria-label="Insertar moneda">
+        <div class="cs-machine-top">
+          <div class="cs-machine-slit">
+            <div class="cs-slit-inner"></div>
+          </div>
+          <div class="cs-machine-arrows">↓↓↓</div>
+        </div>
+        <div class="cs-machine-body">
+          <div class="cs-machine-led cs-led-1"></div>
+          <div class="cs-machine-led cs-led-2"></div>
+          <div class="cs-machine-led cs-led-3"></div>
+          <div class="cs-machine-text">PUSH</div>
+          <div class="cs-machine-led cs-led-4"></div>
+          <div class="cs-machine-led cs-led-5"></div>
+          <div class="cs-machine-led cs-led-6"></div>
+        </div>
+        <div class="cs-machine-tray"></div>
+      </div>
+    </div>
+
+    <div class="cs-any-key">PRESS ANY KEY · CLIQUE PARA JUGAR</div>
+  </div>
+
+  <!-- Demo reel (decorative) -->
+  <div class="cs-demo-reels" aria-hidden="true">
+    <div class="cs-demo-reel" id="cr0">🐉</div>
+    <div class="cs-demo-reel cs-reel-center" id="cr1">💰</div>
+    <div class="cs-demo-reel" id="cr2">🌸</div>
+  </div>
+
+  <!-- Bottom hints -->
+  <div class="cs-hints">
+    <span class="cs-hint-item">⬡ V-ZONE</span>
+    <span class="cs-hint-item">🌸 TULIP</span>
+    <span class="cs-hint-item">🔥 FEVER ×5</span>
+    <span class="cs-hint-item">⚡ REACH</span>
+  </div>
+
+  <!-- Border LED strips on attract screen -->
+  <div class="cs-led-strip cs-led-top"></div>
+  <div class="cs-led-strip cs-led-bot"></div>
+  <div class="cs-led-strip-v cs-led-left"></div>
+  <div class="cs-led-strip-v cs-led-right"></div>
+</div>
+
+<!-- ═══ CABINET WRAP ═══ -->
+<div class="cabinet-wrap">
+
+  <!-- ══ LEFT DECO PANEL ══ -->
+  <aside class="deco-panel deco-left">
+    <div class="vled-bar vled-l"></div>
+
+    <div class="side-panel">
+      <div class="side-info">
+        <span class="si-label">玉 BOLAS</span>
+        <span class="si-val red" id="side-balls">10</span>
+      </div>
+      <div class="side-info">
+        <span class="si-label">PUNTOS</span>
+        <span class="si-val blue" id="side-score">0</span>
+      </div>
+      <div class="side-info">
+        <span class="si-label">RÉCORD</span>
+        <span class="si-val gold" id="side-high">0</span>
+      </div>
+      <div class="side-info">
+        <span class="si-label">MULT.</span>
+        <span class="si-val pink" id="side-mult">×1</span>
+      </div>
+      <div class="side-info">
+        <span class="si-label">MODO</span>
+        <span class="si-val green" id="side-mode">NORMAL</span>
+      </div>
+      <div class="side-info">
+        <span class="si-label">CRÉDITOS</span>
+        <span class="si-val green" id="side-credits">0 ¥</span>
+      </div>
+    </div>
+
+    <div class="dot-matrix" id="dot-matrix-l"></div>
+
+    <!-- Lucky lamp -->
+    <div class="lucky-lamp">
+      <div class="lucky-lamp-body"><div class="lucky-lamp-glow"></div></div>
+      <div class="lucky-lamp-label">LUCKY</div>
+    </div>
+    <!-- Last win -->
+    <div class="jackpot-history">
+      <div class="jh-title">LAST WIN</div>
+      <div class="jh-val" id="jh-val">—</div>
+    </div>
+    <div class="neon-side-sign">
+      <span class="ns-char n-purple" style="--nd:0">P</span>
+      <span class="ns-char n-blue"   style="--nd:1">A</span>
+      <span class="ns-char n-pink"   style="--nd:2">C</span>
+      <span class="ns-char n-purple" style="--nd:3">H</span>
+      <span class="ns-char n-blue"   style="--nd:4">I</span>
+      <span class="ns-char n-pink"   style="--nd:5">N</span>
+      <span class="ns-char n-purple" style="--nd:6">K</span>
+      <span class="ns-char n-blue"   style="--nd:7">O</span>
+    </div>
+  </aside>
+
+  <!-- ══ CABINET ══ -->
+  <div class="cabinet">
+
+    <!-- Border LED strips (top & bottom edges) -->
+    <div class="edge-leds edge-top"    aria-hidden="true"></div>
+    <div class="edge-leds edge-bottom" aria-hidden="true"></div>
+
+    <!-- Chrome bolts -->
+    <div class="chrome-bolt cb-tl" aria-hidden="true"></div>
+    <div class="chrome-bolt cb-tr" aria-hidden="true"></div>
+    <div class="chrome-bolt cb-ml" aria-hidden="true"></div>
+    <div class="chrome-bolt cb-mr" aria-hidden="true"></div>
+
+    <!-- Corner clusters -->
+    <div class="corner-cluster cc-tl" aria-hidden="true"><div class="cc-ring r1"></div><div class="cc-ring r2"></div><div class="cc-dot"></div></div>
+    <div class="corner-cluster cc-tr" aria-hidden="true"><div class="cc-ring r1"></div><div class="cc-ring r2"></div><div class="cc-dot"></div></div>
+    <div class="corner-cluster cc-bl" aria-hidden="true"><div class="cc-ring r1"></div><div class="cc-ring r2"></div><div class="cc-dot"></div></div>
+    <div class="corner-cluster cc-br" aria-hidden="true"><div class="cc-ring r1"></div><div class="cc-ring r2"></div><div class="cc-dot"></div></div>
+
+    <!-- ── JACKPOT DISPLAY ── -->
+    <div class="jackpot-display">
+      <span class="jd-label">★ JACKPOT PRIZE ★</span>
+      <span class="jd-value" id="jackpot-val">1,000,000</span>
+    </div>
+
+    <!-- ── TOP ARCH ── -->
+    <div class="top-arch">
+
+      <div class="marquee-wrap" aria-hidden="true">
+        <div class="marquee-track">
+          <span>★ DRAGON FORTUNE PACHINKO ★ 福龍 ★ BIG WIN ★ FEVER ★ JACKPOT ★ 大当たり ★ チャンス ★ BONUS ★ LUCKY ★ 福龍 ★ &nbsp;&nbsp;&nbsp;</span>
+          <span>★ DRAGON FORTUNE PACHINKO ★ 福龍 ★ BIG WIN ★ FEVER ★ JACKPOT ★ 大当たり ★ チャンス ★ BONUS ★ LUCKY ★ 福龍 ★ &nbsp;&nbsp;&nbsp;</span>
+        </div>
+      </div>
+
+      <div class="brand-strip">
+        <span class="brand-name">DRAGON&nbsp;FORTUNE</span>
+        <span class="brand-sub">パチンコ 福龍</span>
+      </div>
+
+      <div class="speakers-row">
+        <div class="speaker left" aria-hidden="true">
+          <div class="spk-mesh"></div>
+          <div class="spk-ring-anim"></div>
+          <div class="spk-dots"></div>
+        </div>
+
+        <div class="top-center">
+          <div class="game-title">福龍 PACHINKO<br><small>パチンコ · REAL MACHINE</small></div>
+          <div class="arch-scores">
+            <div class="arch-score-box">
+              <span class="as-label">SCORE</span>
+              <span class="as-val" id="arch-score">0</span>
+            </div>
+            <div class="arch-score-box fever-box" id="fever-box" style="display:none">
+              <span class="as-label">FEVER</span>
+              <span class="as-val" id="fever-timer">30</span>
+            </div>
+            <div class="arch-score-box">
+              <span class="as-label">BOLAS</span>
+              <span class="as-val" id="arch-balls">10</span>
+            </div>
+          </div>
+          <!-- Mini ticker dots -->
+          <div class="arch-led-ticker" aria-hidden="true">
+            <div class="ticker-dot" style="--d:0"></div><div class="ticker-dot" style="--d:1"></div>
+            <div class="ticker-dot" style="--d:2"></div><div class="ticker-dot" style="--d:3"></div>
+            <div class="ticker-dot" style="--d:4"></div><div class="ticker-dot" style="--d:5"></div>
+            <div class="ticker-dot" style="--d:6"></div><div class="ticker-dot" style="--d:7"></div>
+            <div class="ticker-dot" style="--d:8"></div><div class="ticker-dot" style="--d:9"></div>
+          </div>
+        </div>
+
+        <div class="speaker right" aria-hidden="true">
+          <div class="spk-mesh"></div>
+          <div class="spk-ring-anim"></div>
+          <div class="spk-dots"></div>
+        </div>
+      </div>
+
+      <div class="led-strip-h s1" aria-hidden="true"></div>
+      <div class="led-strip-h s2" aria-hidden="true"></div>
+    </div><!-- /top-arch -->
+
+    <!-- ── OVAL FIELD ── -->
+    <div class="field-section" style="position:relative">
+      <!-- Jackpot neon sign above field -->
+      <div class="jackpot-sign" aria-hidden="true">
+        <span class="jk-char" style="--jd:0">J</span><span class="jk-char" style="--jd:1">A</span><span class="jk-char" style="--jd:2">C</span><span class="jk-char" style="--jd:3">K</span><span class="jk-sep">★</span><span class="jk-char" style="--jd:4">P</span><span class="jk-char" style="--jd:5">O</span><span class="jk-char" style="--jd:6">T</span>
+      </div>
+      <!-- Vertical LED columns beside field -->
+      <div class="field-side-leds fsl-left"  aria-hidden="true"></div>
+      <div class="field-side-leds fsl-right" aria-hidden="true"></div>
+      <!-- Decorative stars around oval -->
+      <div class="field-star fs-gold"   style="top:8%;  left:8%;  animation-delay:0s"  aria-hidden="true">★</div>
+      <div class="field-star fs-purple" style="top:8%;  right:8%; animation-delay:.3s" aria-hidden="true">★</div>
+      <div class="field-star fs-blue"   style="top:50%; left:3%;  animation-delay:.6s" aria-hidden="true">◆</div>
+      <div class="field-star fs-blue"   style="top:50%; right:3%; animation-delay:.9s" aria-hidden="true">◆</div>
+      <div class="field-star fs-gold"   style="bottom:4%; left:8%; animation-delay:1.2s" aria-hidden="true">★</div>
+      <div class="field-star fs-purple" style="bottom:4%; right:8%; animation-delay:1.5s" aria-hidden="true">★</div>
+      <div class="field-frame">
+        <div class="frame-beads"       aria-hidden="true"></div>
+        <div class="field-neon-outer"  aria-hidden="true"></div>
+        <div class="field-inner">
+          <div id="game-canvas-container"></div>
+          <div class="launch-band">▼ ZONA DE LANZAMIENTO ▼</div>
+          <div id="score-popup" class="score-popup" aria-live="polite"></div>
+          <div id="zone-flash"  class="zone-flash"  aria-hidden="true"></div>
+        </div>
+      </div>
+    </div><!-- /field-section -->
+
+    <!-- ── REEL SCREEN ── -->
+    <div class="reel-screen" aria-label="Carretes digitales">
+      <!-- Win banner overlay -->
+      <div class="win-banner" id="win-banner" aria-live="polite">
+        <span class="win-banner-text" id="win-banner-text">BIG WIN!</span>
+      </div>
+      <div class="crt-overlay" aria-hidden="true"></div>
+
+      <!-- Side pip lights -->
+      <div class="reel-side-lights" aria-hidden="true">
+        <div class="rsl-pip"></div><div class="rsl-pip"></div><div class="rsl-pip"></div>
+        <div class="rsl-text">REELS</div>
+        <div class="rsl-pip"></div><div class="rsl-pip"></div><div class="rsl-pip"></div>
+      </div>
+
+      <div class="reel-title">⬡ DIGITAL REELS 数字リール ⬡</div>
+
+      <!-- Win line indicators above reels -->
+      <div class="win-lines-wrap" aria-hidden="true">
+        <div class="win-line wl-top" data-label="TOP"></div>
+        <div class="win-line wl-mid" data-label="MID"></div>
+        <div class="win-line wl-bot" data-label="BOT"></div>
+      </div>
+
+      <div class="reel-bezel">
+        <div class="reels-row">
+        <div class="reel-wrap">
+          <div class="reel" id="reel-0"><span class="reel-inner">🐉</span></div>
+          <div class="reel-led-strip"></div>
+        </div>
+        <div class="reel-wrap">
+          <div class="reel reel-center" id="reel-1"><span class="reel-inner">💰</span></div>
+          <div class="reel-led-strip"></div>
+        </div>
+        <div class="reel-wrap">
+          <div class="reel" id="reel-2"><span class="reel-inner">🌸</span></div>
+          <div class="reel-led-strip"></div>
+        </div>
+        </div>
+      </div><!-- /reel-bezel -->
+      <div class="reel-result-bar" id="reel-result">— READY —</div>
+      <div class="mode-lights">
+        <div class="mode-light" id="ml-normal">NORMAL</div>
+        <div class="mode-light" id="ml-chance">CHANCE</div>
+        <div class="mode-light" id="ml-reach">REACH</div>
+        <div class="mode-light" id="ml-fever">FEVER</div>
+      </div>
+    </div>
+
+    <!-- ── STATS PANEL ── -->
+    <div class="stats-panel">
+      <div class="stats-title">📊 ESTADÍSTICAS</div>
+      <div class="stats-grid">
+        <div class="stat-item"><span class="stat-label">TIROS</span><span class="stat-val" id="stat-shots">0</span></div>
+        <div class="stat-item"><span class="stat-label">V-ZONE</span><span class="stat-val gold" id="stat-vzones">0</span></div>
+        <div class="stat-item"><span class="stat-label">GATES</span><span class="stat-val blue" id="stat-gates">0</span></div>
+        <div class="stat-item"><span class="stat-label">TULIP</span><span class="stat-val green" id="stat-tulips">0</span></div>
+        <div class="stat-item"><span class="stat-label">JACKPOT</span><span class="stat-val pink" id="stat-jackpots">0</span></div>
+        <div class="stat-item"><span class="stat-label">BONUS</span><span class="stat-val" id="stat-bonuses">0</span></div>
+        <div class="stat-item"><span class="stat-label">PRECISIÓN</span><span class="stat-val" id="stat-acc">0%</span></div>
+        <div class="stat-item"><span class="stat-label">TIEMPO</span><span class="stat-val" id="stat-time">0s</span></div>
+      </div>
+    </div>
+
+    <!-- ── SCORE PANEL ── -->
+    <div class="score-panel">
+      <div class="score-box">
+        <span class="score-label">BALLS 玉</span>
+        <span class="score-value red" id="disp-balls">10</span>
+      </div>
+      <div class="score-box">
+        <span class="score-label">SCORE 点</span>
+        <span class="score-value blue" id="disp-score">0</span>
+      </div>
+      <div class="score-box">
+        <span class="score-label">RECORD 記録</span>
+        <span class="score-value gold" id="disp-high">0</span>
+      </div>
+      <div class="score-box">
+        <span class="score-label">MULT.</span>
+        <span class="score-value pink" id="disp-mult">×1</span>
+      </div>
+      <div class="score-box">
+        <span class="score-label">CRÉDITOS</span>
+        <span class="score-value green" id="disp-credits">0 ¥</span>
+      </div>
+    </div>
+
+    <!-- ── CONTROL PANEL ── -->
+    <div class="control-panel">
+
+      <!-- LED dot row across top of panel -->
+      <div class="panel-led-row" aria-hidden="true">
+        <div class="pl-dot" style="--di:0"></div><div class="pl-dot" style="--di:1"></div>
+        <div class="pl-dot" style="--di:2"></div><div class="pl-dot" style="--di:3"></div>
+        <div class="pl-dot" style="--di:4"></div><div class="pl-dot" style="--di:5"></div>
+        <div class="pl-dot" style="--di:6"></div><div class="pl-dot" style="--di:7"></div>
+        <div class="pl-dot" style="--di:8"></div><div class="pl-dot" style="--di:9"></div>
+        <div class="pl-dot" style="--di:10"></div><div class="pl-dot" style="--di:11"></div>
+        <div class="pl-dot" style="--di:12"></div><div class="pl-dot" style="--di:13"></div>
+        <div class="pl-dot" style="--di:14"></div><div class="pl-dot" style="--di:15"></div>
+        <div class="pl-dot" style="--di:16"></div><div class="pl-dot" style="--di:17"></div>
+        <div class="pl-dot" style="--di:18"></div><div class="pl-dot" style="--di:19"></div>
+      </div>
+
+      <div class="btn-row">
+        <div class="btn-column">
+          <div class="btn-ring-wrap">
+            <div class="btn-ring" id="btn-add" role="button" tabindex="0" aria-label="Añadir 5 bolas">
+              <div class="btn-face blue-btn">+¥<br>CRÉD</div>
+            </div>
+            <span class="btn-label">CRÉDITO</span>
+          </div>
+          <div class="btn-ring-wrap">
+            <div class="btn-ring" id="btn-spin" role="button" tabindex="0" aria-label="Girar carretes">
+              <div class="btn-face blue-btn">GIRAR<br>リール</div>
+            </div>
+            <span class="btn-label">REELS</span>
+          </div>
+        </div>
+
+        <div class="btn-center-wrap">
+          <div class="power-wrap">
+            <div class="power-bar-bg">
+              <div class="power-bar-fill" id="power-fill"></div>
+            </div>
+            <span class="power-label">POWER</span>
+          </div>
+          <div class="launch-halo-wrap">
+            <div class="launch-halo h1" aria-hidden="true"></div>
+            <div class="launch-halo h2" aria-hidden="true"></div>
+            <div class="launch-halo h3" aria-hidden="true"></div>
+            <div class="btn-launch" id="btn-launch" role="button" tabindex="0"
+                 aria-label="Lanzar bola – mantén pulsado para más potencia">
+              <div class="btn-launch-face">
+                <span class="launch-icon">🔴</span>
+                LAUNCH<br>発射
+              </div>
+            </div>
+          </div>
+          <span class="btn-label" style="color:rgba(245,160,0,.8)">SPACE / HOLD</span>
+        </div>
+
+        <div class="btn-column">
+          <div class="btn-ring-wrap">
+            <div class="btn-ring" id="btn-reset" role="button" tabindex="0" aria-label="Reiniciar">
+              <div class="btn-face">RESET<br>リセット</div>
+            </div>
+            <span class="btn-label">RESET</span>
+          </div>
+          <div class="btn-ring-wrap">
+            <div class="btn-ring" id="btn-diff" role="button" tabindex="0" aria-label="Cambiar dificultad">
+              <div class="btn-face" id="diff-face">EASY<br>難易</div>
+            </div>
+            <span class="btn-label">LEVEL</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="options-row">
+        <button class="opt-btn active" id="tog-circuit">⬡ CIRCUITO</button>
+        <button class="opt-btn active" id="tog-sound">🔊 SONIDO</button>
+        <button class="opt-btn" id="tog-gravity">↓ BAJA G</button>
+        <button class="opt-btn" id="tog-auto">🤖 AUTO</button>
+      </div>
+
+      <div class="bottom-strip">DRAGON FORTUNE PACHINKO · 福龍 · 2025</div>
+    </div>
+
+    <!-- INSERT COIN indicator -->
+    <div class="insert-coin" aria-live="polite">★ INSERT COIN · コインを入れてください ★</div>
+
+    <!-- Coin tray -->
+    <div class="coin-tray" aria-label="Bandeja de monedas">
+      <div class="coin-tray-slot"></div>
+      <span class="coin-tray-label">COIN TRAY</span>
+      <div class="coin-tray-slot"></div>
+    </div>
+
+    <div class="cabinet-foot" aria-hidden="true">
+      <div class="foot-led"></div>
+    </div>
+
+  </div><!-- /cabinet -->
+
+  <!-- ══ RIGHT DECO PANEL ══ -->
+  <aside class="deco-panel deco-right">
+    <div class="vled-bar vled-r"></div>
+
+    <!-- COIN SLOT -->
+    <div class="coin-slot-wrap">
+      <div class="coin-slot-label">INSERT COIN</div>
+      <div class="coin-slot"><div class="coin-slot-slit"></div></div>
+      <div class="coin-tray"><div class="coin-tray-inner"></div></div>
+    </div>
+
+    <!-- WIN METER -->
+    <div class="win-meter">
+      <div class="win-meter-label">WIN METER</div>
+      <div class="win-meter-bar">
+        <div class="win-meter-fill" id="win-meter-fill"></div>
+      </div>
+      <div class="win-meter-segments"><span>LUCKY</span><span>BONUS</span><span>FEVER</span></div>
+    </div>
+
+    <!-- SLOT ARM -->
+    <div class="slot-arm-wrap">
+      <div class="slot-arm-label">PULL!</div>
+      <div class="slot-arm" id="slot-arm">
+        <div class="slot-arm-shaft"></div>
+        <div class="slot-arm-knob"><div class="slot-arm-knob-inner"></div></div>
+      </div>
+      <div class="slot-arm-base"></div>
+    </div>
+
+    <div class="dot-matrix" id="dot-matrix-r"></div>
+
+    <div class="neon-side-sign right-sign">
+      <span class="ns-char n-yellow" style="--nd:0">F</span>
+      <span class="ns-char n-pink"   style="--nd:1">E</span>
+      <span class="ns-char n-yellow" style="--nd:2">V</span>
+      <span class="ns-char n-pink"   style="--nd:3">E</span>
+      <span class="ns-char n-yellow" style="--nd:4">R</span>
+      <span class="ns-char n-green"  style="--nd:5">★</span>
+    </div>
+  </aside>
+
+</div><!-- /cabinet-wrap -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.20.0/matter.min.js"></script>
+<script src="script.js"></script>
+<script>
+/* Attract screen demo reel spinner */
+(function(){
+  const SYMS = ['🐉','💰','🌸','🎱','⭐','🔔','💎','🍀'];
+  const reels = [document.getElementById('cr0'), document.getElementById('cr1'), document.getElementById('cr2')];
+  let vals = [0, 1, 2];
+  reels.forEach((r, i) => {
+    if (!r) return;
+    setInterval(() => {
+      vals[i] = (vals[i] + 1) % SYMS.length;
+      r.textContent = SYMS[vals[i]];
+    }, 400 + i * 130);
+  });
+})();
+
+/* Slot arm click = launch ball */
+(function(){
+  const arm = document.getElementById('slot-arm');
+  if (arm) {
+    arm.addEventListener('click', () => {
+      arm.classList.add('pulled');
+      setTimeout(() => arm.classList.remove('pulled'), 650);
+      const launchBtn = document.getElementById('btn-launch');
+      if (launchBtn) launchBtn.click();
+    });
+  }
+  // Win meter tracks score
+  setInterval(() => {
+    const fill = document.getElementById('win-meter-fill');
+    if (!fill) return;
+    const s = parseInt((document.getElementById('disp-score') || {}).textContent?.replace(/,/g,'') || 0);
+    const pct = Math.min(100, (s / 1000) * 100);
+    fill.style.width = pct + '%';
+    fill.style.background = pct > 66
+      ? 'linear-gradient(90deg,#ff3000,#ff8800,#ffcc00)'
+      : pct > 33
+        ? 'linear-gradient(90deg,#8800ff,#ff00cc,#ff3000)'
+        : 'linear-gradient(90deg,#0050ff,#00cfff)';
+  }, 300);
+  // Last win display
+  const origAdd = window.__addScoreHook;
+  let lastScore = 0;
+  setInterval(() => {
+    const s = parseInt((document.getElementById('disp-score') || {}).textContent?.replace(/,/g,'') || 0);
+    if (s !== lastScore) {
+      const diff = s - lastScore;
+      if (diff > 0) {
+        const el = document.getElementById('jh-val');
+        if (el) el.textContent = '+' + diff;
+      }
+      lastScore = s;
+    }
+  }, 250);
+})();
+
+/* Dot-matrix LED panels */
+(function(){
+  function buildMatrix(id, rows, cols) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.style.setProperty('--cols', cols);
+    for (let i = 0; i < rows * cols; i++) {
+      const d = document.createElement('div');
+      d.className = 'dm-dot';
+      d.style.setProperty('--i', i);
+      el.appendChild(d);
+    }
+    const HUES = [270, 200, 320, 45, 160, 0, 30];
+    setInterval(() => {
+      el.querySelectorAll('.dm-dot').forEach(dot => {
+        const on = Math.random() > 0.55;
+        dot.classList.toggle('dm-on', on);
+        if (on) dot.style.setProperty('--hue', HUES[Math.floor(Math.random()*HUES.length)]);
+      });
+    }, 160);
+  }
+  buildMatrix('dot-matrix-l', 14, 5);
+  buildMatrix('dot-matrix-r', 14, 5);
+})();
+</script>
+</body>
+</html>
