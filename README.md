@@ -1,6 +1,6 @@
 # 福龍 Dragon Fortune Pachinko
 
-> Simulador de pachinko japonés recreado con tecnologías web puras — sin frameworks, sin dependencias propias. Solo HTML5, CSS y JavaScript... y física real.
+> Japanese pachinko simulator recreated with pure web technologies — no frameworks, no custom dependencies. Just HTML5, CSS and JavaScript... and real physics.
 
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white)
@@ -9,122 +9,124 @@
 
 ---
 
-## ¿Qué es esto?
+## What is this?
 
-El pachinko es la máquina arcade más icónica de Japón: una mezcla de pinball y tragaperras en la que bolas de acero caen por un tablero repleto de pines, desencadenando bonificaciones, carretes y jackpots.
+Pachinko is Japan's most iconic arcade machine: a mix of pinball and slot machine where steel balls fall through a board full of pins, triggering bonuses, reels and jackpots.
 
-Este proyecto recrea esa experiencia en el navegador, con estética de gabinete físico real, efectos de neón, sistema de física simulada y modos de juego propios del pachinko auténtico.
+This project recreates that experience in the browser, with the look of a real physical cabinet, neon effects, a simulated physics system and game modes taken from authentic pachinko.
 
-Desarrollado como proyecto de clase de programación web.
+Developed as a web programming class project.
 
 ---
 
-## Características
+## Features
 
-### Jugabilidad
-- **Sistema de física real** con [Matter.js](https://brm.io/matter-js/) — las bolas rebotan, caen y se comportan de forma natural
-- **Mantén pulsado SPACE** para cargar la potencia de lanzamiento; suéltalo para disparar
-- **V-Zone** — zona central de alto valor que activa los carretes digitales
-- **Tulip gates** — compuertas laterales que se abren y cierran dinámicamente
-- **Bonus gates** — puertas inferiores con puntuación adicional
-- **Modo FEVER** — multiplicador ×5 durante 30 segundos al conseguir jackpot
-- **Modo REACH** — aviso de última oportunidad antes del jackpot
-- **Carretes digitales** con 8 símbolos (🐉 💰 🌸 🎱 ⭐ 🔔 💎 🍀) y animación de giro
+### Gameplay
+- **Real physics system** with [Matter.js](https://brm.io/matter-js/) — balls bounce, fall and behave naturally
+- **Hold SPACE** to charge the launch power; release it to fire
+- **V-Zone** — high-value central zone that triggers the digital reels
+- **Tulip gates** — side gates that open and close dynamically
+- **Bonus gates** — lower gates with extra points
+- **FEVER mode** — ×5 multiplier for 30 seconds after hitting the jackpot
+- **REACH mode** — last-chance warning before the jackpot
+- **Digital reels** with 8 symbols (🐉 💰 🌸 🎱 ⭐ 🔔 💎 🍀) and a spinning animation
 
-### Sistema de puntuación
-- Multiplicadores dinámicos (×1 → ×2 → ×3 → ×5 en Fever)
-- Récord guardado en `localStorage`
-- Créditos acumulables mediante el botón `+¥ CRÉD`
-- Tabla de clasificación local (top 5)
-- Estadísticas completas de partida: tiros, precisión, V-zones, gates, tulips, jackpots, bonuses y tiempo
+### Scoring system
+- Dynamic multipliers (×1 → ×2 → ×3 → ×5 in Fever)
+- High score saved in `localStorage`
+- Stackable credits through the `+¥ CRÉD` button
+- Local leaderboard (top 5)
+- Full game statistics: shots, accuracy, V-zones, gates, tulips, jackpots, bonuses and time
 
-### Opciones de juego
-| Opción | Descripción |
+### Game options
+| Option | Description |
 |---|---|
-| ⬡ CIRCUITO | Activa/desactiva el efecto visual de trazado de circuito en el fondo |
-| 🔊 SONIDO | Activa/desactiva los efectos de sonido Web Audio API |
-| ↓ BAJA G | Reduce la gravedad para una caída más suave |
-| 🤖 AUTO | Lanzamiento automático continuo |
-| LEVEL | Alterna entre dificultades EASY / NORMAL / HARD |
+| ⬡ CIRCUITO | Turns the circuit-trace visual effect in the background on/off |
+| 🔊 SONIDO | Turns the Web Audio API sound effects on/off |
+| ↓ BAJA G | Lowers gravity for a gentler fall |
+| 🤖 AUTO | Continuous automatic launching |
+| LEVEL | Switches between EASY / NORMAL / HARD difficulty |
 
-### Estética
-- Gabinete de arcade completo con paneles laterales decorativos
-- Marquesina animada con texto en bucle
-- Altavoces con animación de vibración
-- Signos de neón animados (PACHINKO / FEVER)
-- Paneles de matriz de puntos LED en ambos laterales
-- Pantalla de atracción con contador de jackpot en tiempo real y carretes demo
-- Pantalla de Game Over con ranking y resumen de partida
-- Kanji flotantes de ambiente: 福 (suerte), 龍 (dragón), 運 (fortuna), 宝 (tesoro), 金 (oro)
+> Option names are shown exactly as they appear in the game interface.
+
+### Look and feel
+- Full arcade cabinet with decorative side panels
+- Animated marquee with looping text
+- Speakers with a vibration animation
+- Animated neon signs (PACHINKO / FEVER)
+- LED dot-matrix panels on both sides
+- Attract screen with a real-time jackpot counter and demo reels
+- Game Over screen with leaderboard and game summary
+- Floating ambient kanji: 福 (luck), 龍 (dragon), 運 (fortune), 宝 (treasure), 金 (gold)
 
 ---
 
-## Instalación y uso
+## Installation and usage
 
-No hay dependencias que instalar ni pasos de compilación. Simplemente clona y abre:
+There are no dependencies to install and no build steps. Just clone and open:
 
 ```bash
 git clone https://github.com/misteralva/Pachinko.git
 cd Pachinko
-# Abre index.html en tu navegador
+# Open index.html in your browser
 open index.html        # macOS
 start index.html       # Windows
 xdg-open index.html    # Linux
 ```
 
-O si prefieres un servidor local:
+Or, if you prefer a local server:
 
 ```bash
-# Con Python
+# With Python
 python -m http.server 8000
 
-# Con Node.js (npx)
+# With Node.js (npx)
 npx serve .
 ```
 
-Luego abre `http://localhost:8000` en tu navegador.
+Then open `http://localhost:8000` in your browser.
 
 ---
 
-## Controles
+## Controls
 
-| Acción | Teclado | Ratón / Pantalla |
+| Action | Keyboard | Mouse / Screen |
 |---|---|---|
-| Cargar potencia | Mantener `SPACE` | Mantener botón LAUNCH |
-| Disparar bola | Soltar `SPACE` | Soltar botón LAUNCH |
-| Añadir crédito | — | Botón `+¥ CRÉD` |
-| Girar carretes | — | Botón `GIRAR` |
-| Insertar moneda (inicio) | Cualquier tecla | Clic en pantalla |
+| Charge power | Hold `SPACE` | Hold the LAUNCH button |
+| Fire ball | Release `SPACE` | Release the LAUNCH button |
+| Add credit | — | `+¥ CRÉD` button |
+| Spin reels | — | `GIRAR` button |
+| Insert coin (start) | Any key | Click on screen |
 
 ---
 
-## Estructura del proyecto
+## Project structure
 
 ```
 Pachinko/
-├── index.html      # Estructura completa del gabinete y overlays (628 líneas)
-├── style.css       # Estilos del gabinete, efectos neón, animaciones (~48% del código)
-└── script.js       # Lógica del juego, física Matter.js, audio (~34% del código)
+├── index.html      # Full cabinet structure and overlays (628 lines)
+├── style.css       # Cabinet styles, neon effects, animations (~48% of the code)
+└── script.js       # Game logic, Matter.js physics, audio (~34% of the code)
 ```
 
-El proyecto no tiene carpetas adicionales ni dependencias locales. Matter.js se carga desde CDN.
+The project has no extra folders or local dependencies. Matter.js is loaded from a CDN.
 
 ---
 
-## Tecnologías utilizadas
+## Technologies used
 
-- **HTML5** — estructura semántica del gabinete y todos los overlays del juego
-- **CSS3** — animaciones `@keyframes`, variables CSS, efectos de neón, `backdrop-filter`, diseño responsivo
-- **JavaScript (ES6+)** — lógica de juego, sistema de eventos, gestión de estado, `localStorage`
-- **Matter.js 0.20** — motor de física 2D para la simulación realista de las bolas
-- **Web Audio API** — efectos de sonido generados proceduralmente sin archivos de audio externos
-
----
-
-## Licencia
-
-Proyecto académico. Uso libre para fines educativos.
+- **HTML5** — semantic structure of the cabinet and all the game overlays
+- **CSS3** — `@keyframes` animations, CSS variables, neon effects, `backdrop-filter`, responsive design
+- **JavaScript (ES6+)** — game logic, event system, state management, `localStorage`
+- **Matter.js 0.20** — 2D physics engine for realistic ball simulation
+- **Web Audio API** — procedurally generated sound effects with no external audio files
 
 ---
 
-*Desarrollado para clase de programación web · 2025*
+## License
+
+Academic project. Free to use for educational purposes.
+
+---
+
+*Developed for a web programming class · 2025*
